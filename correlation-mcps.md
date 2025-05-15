@@ -13,7 +13,15 @@ Correlation Model Context Protocols (MCPs) identify relationships between differ
 Analyzes relationships between different market ecosystems (e.g., AI vs. DeFi, Layer-1 vs. Gaming):
 
 ```javascript
-javascriptconst crossEcosystemMCP = new CrossEcosystemCorrelationMCP({  ecosystems: ['ai', 'defi', 'gaming', 'layer1'],  metrics: ['price', 'volume', 'social'],  window: '30d',  method: 'pearson' // correlation method});const correlations = await crossEcosystemMCP.process();// Returns: correlation matrix between ecosystems
+const crossEcosystemMCP = new CrossEcosystemCorrelationMCP({
+  ecosystems: ['ai', 'defi', 'gaming', 'layer1'],
+  metrics: ['price', 'volume', 'social'],
+  window: '30d',
+  method: 'pearson'  // correlation method
+});
+
+const correlations = await crossEcosystemMCP.process();
+// Returns: correlation matrix between ecosystems
 ```
 
 Key capabilities:
@@ -28,7 +36,16 @@ Key capabilities:
 Focuses on time-delayed correlations between metrics, identifying leading and lagging relationships:
 
 ```javascript
-javascriptconst temporalMCP = new TemporalCorrelationMCP({  subject: 'BTC-price',  targets: ['ETH-price', 'SOL-price', 'AVAX-price'],  maxLag: 72, // hours  granularity: '1h',  significance: 0.95 // statistical significance threshold});const lags = await temporalMCP.process();// Returns: optimal lag time and correlation strength for each target
+const temporalMCP = new TemporalCorrelationMCP({
+  subject: 'BTC-price',
+  targets: ['ETH-price', 'SOL-price', 'AVAX-price'],
+  maxLag: 72,  // hours
+  granularity: '1h',
+  significance: 0.95  // statistical significance threshold
+});
+
+const lags = await temporalMCP.process();
+// Returns: optimal lag time and correlation strength for each target
 ```
 
 Key capabilities:
@@ -43,7 +60,15 @@ Key capabilities:
 Specializes in linking sentiment metrics to price movements with time-offset calibration:
 
 ```javascript
-javascriptconst sentimentPriceMCP = new SentimentPriceCorrelationMCP({  assets: ['BTC', 'ETH', 'SOL'],  sentimentSources: ['twitter', 'reddit', 'discord'],  timeOffset: [-48, 48], // hours to check before/after  granularity: '4h'});const impacts = await sentimentPriceMCP.process();// Returns: sentiment impact factors and optimal time offsets
+const sentimentPriceMCP = new SentimentPriceCorrelationMCP({
+  assets: ['BTC', 'ETH', 'SOL'],
+  sentimentSources: ['twitter', 'reddit', 'discord'],
+  timeOffset: [-48, 48],  // hours to check before/after
+  granularity: '4h'
+});
+
+const impacts = await sentimentPriceMCP.process();
+// Returns: sentiment impact factors and optimal time offsets
 ```
 
 Key capabilities:
@@ -58,7 +83,15 @@ Key capabilities:
 Analyzes trading volume in relation to social engagement metrics:
 
 ```javascript
-javascriptconst volumeEngagementMCP = new VolumeEngagementCorrelationMCP({  assets: ['BTC', 'ETH', 'SOL'],  engagementMetrics: ['tweets', 'reddit-posts', 'discord-messages'],  anomalyThreshold: 2.5, // standard deviations  window: '14d'});const anomalies = await volumeEngagementMCP.process();// Returns: detected anomalies in volume-engagement relationship
+const volumeEngagementMCP = new VolumeEngagementCorrelationMCP({
+  assets: ['BTC', 'ETH', 'SOL'],
+  engagementMetrics: ['tweets', 'reddit-posts', 'discord-messages'],
+  anomalyThreshold: 2.5,  // standard deviations
+  window: '14d'
+});
+
+const anomalies = await volumeEngagementMCP.process();
+// Returns: detected anomalies in volume-engagement relationship
 ```
 
 Key capabilities:
@@ -80,10 +113,19 @@ Key capabilities:
 ### Integration Example
 
 ```javascript
-javascript// Combining multiple correlation protocolsconst multiCorrelation = new CompositeCorrelationMCP({  protocols: [    new SentimentPriceCorrelationMCP({ /* config */ }),    new TemporalCorrelationMCP({ /* config */ }),    new WhaleMovementCorrelationMCP({ /* config */ })  ],  integrationMethod: 'weighted',  weights: [0.4, 0.4, 0.2]});const integratedSignals = await multiCorrelation.process();// Returns: integrated correlation signals from multiple protocols
+// Combining multiple correlation protocols
+const multiCorrelation = new CompositeCorrelationMCP({
+  protocols: [
+    new SentimentPriceCorrelationMCP({ /* config */ }),
+    new TemporalCorrelationMCP({ /* config */ }),
+    new WhaleMovementCorrelationMCP({ /* config */ })
+  ],
+  integrationMethod: 'weighted',
+  weights: [0.4, 0.4, 0.2]
+});
+
+const integratedSignals = await multiCorrelation.process();
+// Returns: integrated correlation signals from multiple protocols
 ```
 
 This compositional approach enables sophisticated correlation analysis through the combination of specialized protocols.
-
-```
-```
