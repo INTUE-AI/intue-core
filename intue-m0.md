@@ -7,7 +7,12 @@
 The INTUE m0 Agent specializes in early detection of directional market movements across cryptocurrency ecosystems. By analyzing leading indicators and sentiment shifts, this agent identifies momentum patterns before they become apparent in price action.
 
 ```javascript
-javascriptconst momentumAgent = new MomentumAgent({  sensitivity: 'medium',  // Options: low, medium, high  timeframes: ['1h', '4h', '1d'],  minimumConfidence: 0.75,  signalPersistence: 72  // Hours});
+const momentumAgent = new MomentumAgent({
+  sensitivity: 'medium',  // Options: low, medium, high
+  timeframes: ['1h', '4h', '1d'],
+  minimumConfidence: 0.75,
+  signalPersistence: 72  // Hours
+});
 ```
 
 ### Signal Detection Methodology
@@ -31,7 +36,11 @@ Each signal undergoes confidence scoring based on:
 #### detectEmerging()
 
 ```javascript
-javascriptconst signals = await momentumAgent.detectEmerging({  ecosystems: ['ai-agents', 'defi', 'gaming'],  timeframe: '7d',  minimumConfidence: 0.7});
+const signals = await momentumAgent.detectEmerging({
+  ecosystems: ['ai-agents', 'defi', 'gaming'],
+  timeframe: '7d',
+  minimumConfidence: 0.7
+});
 ```
 
 Returns emerging momentum signals across specified ecosystems with confidence scores and projected timeframes.
@@ -39,7 +48,11 @@ Returns emerging momentum signals across specified ecosystems with confidence sc
 #### analyzeEcosystemMomentum()
 
 ```javascript
-javascriptconst analysis = await momentumAgent.analyzeEcosystemMomentum({  ecosystem: 'defi',  components: true,  // Break down by ecosystem components  metrics: ['price', 'volume', 'social', 'development']});
+const analysis = await momentumAgent.analyzeEcosystemMomentum({
+  ecosystem: 'defi',
+  components: true,  // Break down by ecosystem components
+  metrics: ['price', 'volume', 'social', 'development']
+});
 ```
 
 Provides detailed momentum analysis for a specific ecosystem, including component-level breakdowns and multi-metric evaluation.
@@ -54,7 +67,23 @@ When initialized with trading capabilities, the Momentum Agent can:
 * Manage multiple positions across different assets and exchanges
 
 ```javascript
-javascript// Initialize trading capabilitiesmomentumAgent.initializeTrading({  exchange: binanceAdapter,  riskManagement: {    maxRiskPerTrade: 0.02,  // 2% per trade    stopLossPercent: 0.05,   // 5% stop loss    takeProfitPercent: 0.1   // 10% take profit  },  quoteAsset: 'USDT'});// Execute trades based on momentum signalsconst trades = await momentumAgent.executeTrades({  ecosystems: ['ai-agents', 'defi'],  timeframe: '7d',  confidenceThreshold: 0.75});
+// Initialize trading capabilities
+momentumAgent.initializeTrading({
+  exchange: binanceAdapter,
+  riskManagement: {
+    maxRiskPerTrade: 0.02,  // 2% per trade
+    stopLossPercent: 0.05,  // 5% stop loss
+    takeProfitPercent: 0.1   // 10% take profit
+  },
+  quoteAsset: 'USDT'
+});
+
+// Execute trades based on momentum signals
+const trades = await momentumAgent.executeTrades({
+  ecosystems: ['ai-agents', 'defi'],
+  timeframe: '7d',
+  confidenceThreshold: 0.75
+});
 ```
 
 ### Performance Metrics
