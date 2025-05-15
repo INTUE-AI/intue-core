@@ -7,7 +7,12 @@
 The INTUE Meta Agent specializes in forecasting market shifts through narrative analysis and causal relationship identification. This agent processes market, social, and on-chain data to detect emerging narratives before they manifest in price action.
 
 ```javascript
-javascriptconst metaAgent = new MetaAgent({  forecastHorizon: '14d',  // Forecasting window  narrativeThreshold: 0.65,  // Minimum confidence for narrative identification  causationAnalysis: true,  // Enable causal relationship modeling  temporalResolution: '4h'  // Analysis granularity});
+const metaAgent = new MetaAgent({
+  forecastHorizon: '14d',  // Forecasting window
+  narrativeThreshold: 0.65,  // Minimum confidence for narrative identification
+  causationAnalysis: true,  // Enable causal relationship modeling
+  temporalResolution: '4h'  // Analysis granularity
+});
 ```
 
 ### Narrative Analysis Methodology
@@ -31,7 +36,12 @@ Narratives undergo rigorous validation through:
 #### analyzeNarrativeFormation()
 
 ```javascript
-javascriptconst narratives = await metaAgent.analyzeNarrativeFormation({  ecosystems: ['ai', 'layer1', 'gaming'],  minimumStrength: 0.6,  emergingOnly: true,  includeCounterNarratives: true});
+const narratives = await metaAgent.analyzeNarrativeFormation({
+  ecosystems: ['ai', 'layer1', 'gaming'],
+  minimumStrength: 0.6,
+  emergingOnly: true,
+  includeCounterNarratives: true
+});
 ```
 
 Identifies forming narratives across specified ecosystems, returning detailed analysis of strength, potential impact, and estimated timeframes.
@@ -39,7 +49,12 @@ Identifies forming narratives across specified ecosystems, returning detailed an
 #### forecast()
 
 ```javascript
-javascriptconst forecast = await metaAgent.forecast({  asset: 'ETH',  horizon: '7d',  confidenceInterval: 0.9,  factors: ['narrative', 'technical', 'onchain', 'macro']});
+const forecast = await metaAgent.forecast({
+  asset: 'ETH',
+  horizon: '7d',
+  confidenceInterval: 0.9,
+  factors: ['narrative', 'technical', 'onchain', 'macro']
+});
 ```
 
 Generates probabilistic forecasts for specified assets based on narrative analysis and supporting factors.
@@ -53,7 +68,12 @@ The Meta Agent integrates with other INTUE agents to enhance their effectiveness
 * **Risk Management**: Assesses narrative-based risk factors for position sizing
 
 ```javascript
-javascript// Enhance momentum analysis with narrative contextconst enhancedSignals = await metaAgent.enhanceMomentumSignals({  signals: momentumSignals,  narrativeAlignment: true,  counterNarrativeRisk: true});
+// Enhance momentum analysis with narrative context
+const enhancedSignals = await metaAgent.enhanceMomentumSignals({
+  signals: momentumSignals,
+  narrativeAlignment: true,
+  counterNarrativeRisk: true
+});
 ```
 
 ### Development Status
