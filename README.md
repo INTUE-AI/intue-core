@@ -12,59 +12,88 @@ Our platform enables sophisticated signal detection, cross-ecosystem correlation
 
 ## Installation
 
-```bash
+Getting Started
+System Requirements
+Node.js: v14.0.0 or higher
+
+NPM: v7.0.0 or higher
+
+TypeScript: Recommended for full type support
+
+Installation
+INTUE can be installed directly via npm:
+
+Copy
+# Install the package
 npm install @intue/core
-Features
 
-Caching System: Efficient in-memory caching with configurable TTL
-Type Definitions: Consistent types across the INTUE ecosystem
-Configuration Management: Centralized configuration utilities
-Common Interfaces: Standardized interfaces for all MCPs
-Sentiment Analysis: Advanced crypto sentiment analysis tools
-Ecosystem Correlation: Cross-ecosystem pattern detection
-LunarCrush Integration: Social sentiment data adapter
+# Create project directory (optional)
+mkdir my-intue-project
+cd my-intue-project
+Basic Usage
+Create a new file (e.g., index.ts or index.js):
+ 
+typescript
 
-Usage
-Core Functionality
-javascriptconst intue = require('@intue/core');
+Copy
+import { Runtime, Agent } from '@intue/core';
 
-// Create a trading agent
-const agent = intue.createAgent({
-  type: 'momentum',
-  threshold: 0.75
+async function main() {
+  // Initialize the runtime
+  const runtime = await Runtime.init({
+    agentName: 'my-first-agent',
+    options: {
+      logger: {
+        level: 'debug'
+      }
+    }
+  });
+  
+  // Start the runtime
+  await runtime.start();
+  
+  // Get the agent instance
+  const agent = runtime.getAgent();
+  
+  // Analyze some market data
+  const result = agent.analyzeMarketData({
+    price: 45000,
+    volume: 1250000
+  });
+  
+  console.log('Analysis result:', result);
+  
+  // Stop the runtime
+  await runtime.stop();
+}
+
+// Run the example
+main().catch(console.error);
+Using Advanced Features
+Sentiment Analysis
+Copy
+import { SentimentAnalyzer, LunarCrushProvider } from '@intue/core';
+
+// Initialize the LunarCrush provider
+const provider = new LunarCrushProvider({
+  apiKey: process.env.LUNARCRUSH_API_KEY
 });
 
-// Analyze market data
-const signal = intue.analyzeMarketData({
-  price: 45000,
-  volume: 1250000
+// Create a sentiment analyzer
+const analyzer = new SentimentAnalyzer();
+analyzer.addProvider(provider);
+
+// Analyze sentiment for Bitcoin
+const sentiment = await analyzer.analyzeSocialSentiment('BTC');
+console.log('BTC Sentiment:', sentiment);
+Ecosystem Correlation
+Copy
+import { EcosystemCorrelator } from '@intue/core';
+
+// Create an ecosystem correlator
+const correlator = new EcosystemCorrelator({
+  timeframe: '1d',
+  lookbackPeriod: 30
 });
 
-console.log('Agent:', agent);
-console.log('Signal:', signal);
-Accessing Sub-modules
-javascriptconst intue = require('@intue/core');
-
-// Use sentiment analysis functionality
-const sentiment = intue.sentimentAnalysis;
-
-// Use ecosystem correlation functionality
-const correlator = intue.ecosystemCorrelator;
-
-// Use LunarCrush adapter
-const lunarcrush = intue.lunarcrushAdapter;
-Documentation
-For complete documentation, visit our GitBook.
-Related Packages
-
-@intue/lunarcrush-adapter - LunarCrush API adapter for social sentiment data
-@intue/sentiment-analysis-mcp - Sentiment analysis for crypto assets
-@intue/cross-ecosystem-correlation-mcp - Cross-ecosystem correlation analysis
-
-About INTUE
-INTUE derives from the Latin word intueri — to look at attentively, to gaze upon with purpose. This embodies our mission: creating an intelligence layer that sees deeply into the patterns and relationships across digital asset ecosystems. Just as human intuition arises from subconscious pattern recognition, INTUE transforms raw data into actionable insight, revealing the hidden correlations that drive markets.
-The digital asset landscape pulses with millions of interconnected signals — price movements, social sentiment, developer activity, on-chain metrics — each telling a fragment of a larger story. INTUE provides a modular framework to parse this complexity, turning overwhelming data streams into coherent narratives through our specialized MCPs (Modular Crypto Protocols).
-Contributing
-Contributions are welcome! Please feel free to submit a Pull Request.
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
+// Find correlations between assets
