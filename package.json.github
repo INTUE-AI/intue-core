@@ -1,0 +1,19 @@
+**package.json**
+```json
+{
+  "name": "@intue/core",
+  "version": "0.1.0",
+  "description": "Core utilities for INTUE - the intelligence layer for AI agents",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "intue",
+    "crypto",
+    "sentiment",
+    "correlation"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

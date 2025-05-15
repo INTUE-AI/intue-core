@@ -1,0 +1,30 @@
+#### 5. package.json
+```json
+{
+  "name": "@intue/sentiment-analysis-mcp",
+  "version": "0.1.0",
+  "description": "Model Context Protocol for crypto asset sentiment analysis in the INTUE ecosystem",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint src"
+  },
+  "keywords": [
+    "intue",
+    "sentiment",
+    "crypto",
+    "mcp",
+    "analysis"
+  ],
+  "author": "INTUE",
+  "license": "MIT",
+  "dependencies": {
+    "@intue/core": "^0.1.0",
+    "@intue/lunarcrush-adapter": "^0.1.0",
+    "simple-statistics": "^7.8.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.54.0",
+    "jest": "^29.7.0"
+  }
+}

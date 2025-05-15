@@ -1,0 +1,101 @@
+/**
+ * Format correlation matrix for visualization
+ * @param {Array<Array<number>>} matrix - Correlation matrix
+ * @param {Array<string>} labels - Node labels
+ * @returns {Object} - Formatted matrix for visualization
+ */
+function formatCorrelationMatrix(matrix, labels) {
+  return {
+    type: 'correlation_matrix',
+    labels,
+    data: matrix.map(row => row.map(val => Math.round(val * 100) / 100)) // Round to 2 decimals
+  };
+}
+
+/**
+ * Format network graph for visualization
+ * @param {Object} networkData - Network graph data
+ * @returns {Object} - Formatted network for visualization
+ */
+function formatNetworkGraph(networkData) {
+  // Add visualization properties to nodes and edges
+  const nodes = networkData.nodes.map(node => ({
+    ...node,
+    size: 1, // Default size
+    label: node.id
+  }));
+  
+  const edges = networkData.edges.map(edge => ({
+    ...edge,
+    width: edge.weight * 3, // Scale width by weight
+    color: edge.isPositive ? '#4CAF50' : '#F44336' // Green for positive, red for negative
+  }));
+  
+  return {
+    type: 'network_graph',
+    nodes,
+    edges
+  };
+}
+
+/**
+ * Format lead/lag matrix for visualization
+ * @param {Array<Array<number>>} matrix - Lead/lag matrix
+ * @param {Array<string>} labels - Node labels
+ * @returns {Object} - Formatted matrix for visualization
+ */
+function formatLeadLagMatrix(matrix, labels) {
+  return {
+    type: 'lead_lag_matrix',
+    labels,
+    data: matrix.map(row => row.map(val => val !== 0 ? Math.round(val * 10) / 10 : 0)) // Round to 1 decimal
+  };
+}
+
+/**
+ * Format capital flow data for visualization
+ * @param {Object} flowData - Capital flow data
+ * @returns {Object} - Formatted flow data for visualization
+ */
+function formatCapitalFlowVisualization(flowData) {
+  // Calculate total volume for scale
+  const totalVolume = Object.values(flowData.volumeChanges)
+    .reduce((sum, change) => sum + Math.abs(change), 0);
+  
+  // Create nodes with volume proportion
+  const nodes = flowData.ecosystems.map(eco => {
+    const volume = flowData.endVolumes[eco];
+    const change = flowData.volumeChanges[eco];
+    
+    return {
+      id: eco,
+      value: volume,
+      label: eco,
+      title: `${eco}: ${Math.round(change * 100) / 100}%`,
+      color: change > 0 ? '#4CAF50' : '#F44336' // Green for gain, red for loss
+    };
+  });
+  
+  // Create edges for significant flows
+  const edges = flowData.significantFlows.map(flow => ({
+    from: flow.from,
+    to: flow.to,
+    value: flow.value,
+    title: `${flow.from} → ${flow.to}: ${Math.round(flow.percentage)}%`,
+    width: (flow.value / totalVolume) * 20, // Scale width by proportion of total volume
+    color: { color: '#2196F3', opacity: 0.7 }
+  }));
+  
+  return {
+    type: 'capital_flow',
+    nodes,
+    edges
+  };
+}
+
+module.exports = {
+  formatCorrelationMatrix,
+  formatNetworkGraph,
+  formatLeadLagMatrix,
+  formatCapitalFlowVisualization
+};

@@ -1,0 +1,54 @@
+{
+  "name": "@intue/core",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "1.0.3",
+  "description": "Core utilities and shared components for the INTUE ecosystem - the intelligence layer for AI agents.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "index.js",
+    "main.js",
+    "src/",
+    "cross-ecosystem-correlation-mcp/",
+    "sentiment-analysis-mcp/",
+    "lunarcrush-adapter/",
+    "LICENSE.txt",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "dev": "ts-node src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/INTUE-AI/intue-core.git"
+  },
+  "keywords": [
+    "intue",
+    "crypto",
+    "sentiment",
+    "correlation"
+  ],
+  "author": "intue-ai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/INTUE-AI/intue-core/issues"
+  },
+  "homepage": "https://github.com/INTUE-AI/intue-core#readme",
+  "dependencies": {
+    "dotenv": "^16.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.11",
+    "ts-jest": "^29.1.1"
+  }
+}

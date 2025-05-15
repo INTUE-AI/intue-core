@@ -1,0 +1,21 @@
+{
+  "name": "@intue/my-momentum-agent",
+  "version": "0.1.0",
+  "description": "Custom momentum agent for INTUE framework",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "@intue/core": "^1.0.0"
+  },
+  "keywords": [
+    "intue",
+    "trading",
+    "momentum",
+    "agent"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
