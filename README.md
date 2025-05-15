@@ -7,7 +7,8 @@ Core utilities and shared components for the INTUE ecosystem - the intelligence 
 
 ## Overview
 
-INTUE Core provides essential utilities and components used across the INTUE ecosystem of Model Context Protocols (MCPs). This package serves as the foundation for building sophisticated crypto market analysis tools and AI agents.
+INTUE is the intelligence layer for autonomous trading agents, a comprehensive framework designed for quantitative analysis of cryptocurrency markets using advanced AI protocols and agent-based architecture.
+Our platform enables sophisticated signal detection, cross-ecosystem correlation analysis, and autonomous trade execution with unprecedented precision. By leveraging specialized Model Context Protocols (MCPs), INTUE bridges the gap between raw market data and actionable trading intelligence.
 
 ## Installation
 
