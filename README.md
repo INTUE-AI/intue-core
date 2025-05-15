@@ -1,3 +1,6 @@
+
+![Screenshot 2025-05-14 at 5 43 58 PM](https://github.com/user-attachments/assets/9d780993-83c5-4735-9e4a-1af007a8bc0a)
+
 # INTUE Core
 
 Core utilities and shared components for the INTUE ecosystem - the intelligence layer for AI agents.
