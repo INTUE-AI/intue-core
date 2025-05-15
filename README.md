@@ -1,21 +1,5 @@
----
-cover: .gitbook/assets/Your_paragraph_text_1_m3dngz.png
-coverY: -493.23157894736846
-layout:
-  cover:
-    visible: true
-    size: hero
-  title:
-    visible: true
-  description:
-    visible: true
-  tableOfContents:
-    visible: true
-  outline:
-    visible: true
-  pagination:
-    visible: true
----
+---![Screenshot 2025-05-14 at 5 43 58 PM](https://github.com/user-attachments/assets/5c8a5251-898a-4224-bb4a-30c01f03980d)
+
 
 # INTUE Documentation
 
