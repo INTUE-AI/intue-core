@@ -1,4 +1,4 @@
----![Screenshot 2025-05-14 at 5 43 58 PM](https://github.com/user-attachments/assets/5c8a5251-898a-4224-bb4a-30c01f03980d)
+![Screenshot 2025-05-14 at 5 43 58 PM](https://github.com/user-attachments/assets/5c8a5251-898a-4224-bb4a-30c01f03980d)
 
 
 # INTUE Documentation
