@@ -7,7 +7,13 @@
 Model Context Protocols (MCPs) form the foundation of INTUE's intelligence capabilities. Each protocol specializes in processing specific market data into contextually relevant signals through standardized interfaces.
 
 ```javascript
-javascript// MCP base interfaceinterface ModelContextProtocol {  process(data: RawData): Signal[];  configure(options: ConfigOptions): void;  getMetadata(): ProtocolMetadata;  getStatus(): ProtocolStatus;}
+// MCP base interface
+interface ModelContextProtocol {
+  process(data: RawData): Signal[];
+  configure(options: ConfigOptions): void;
+  getMetadata(): ProtocolMetadata;
+  getStatus(): ProtocolStatus;
+}
 ```
 
 MCPs are organized into four primary categories:
@@ -22,7 +28,13 @@ MCPs are organized into four primary categories:
 MCPs are designed for composition, allowing complex analyses through the combination of simpler protocols:
 
 ```javascript
-javascript// Example of protocol compositionconst volumeSentimentCorrelation = new CorrelationMCP({  source1: new VolumeMCP({ granularity: '1h' }),  source2: new SentimentMCP({ source: 'twitter' }),  method: 'pearson',  windowSize: 24 // hours});
+// Example of protocol composition
+const volumeSentimentCorrelation = new CorrelationMCP({
+  source1: new VolumeMCP({ granularity: '1h' }),
+  source2: new SentimentMCP({ source: 'twitter' }),
+  method: 'pearson',
+  windowSize: 24  // hours
+});
 ```
 
 This compositional architecture enables:
@@ -35,7 +47,31 @@ This compositional architecture enables:
 ### Data Flow
 
 ```
-Raw Market Data → Category Classification → Metric Processing → Correlation Detection → Advanced Analysis → Agent Consumption
+┌─────────────────┐
+│ Raw Market Data │
+└────────┬────────┘
+         ▼
+┌─────────────────────┐
+│ Category             │
+│ Classification       │
+└────────┬─────────────┘
+         ▼
+┌─────────────────────┐
+│ Metric Processing    │
+└────────┬─────────────┘
+         ▼
+┌─────────────────────┐
+│ Correlation          │
+│ Detection            │
+└────────┬─────────────┘
+         ▼
+┌─────────────────────┐
+│ Advanced Analysis    │
+└────────┬─────────────┘
+         ▼
+┌─────────────────────┐
+│ Agent Consumption    │
+└─────────────────────┘
 ```
 
 Each MCP transforms input data according to its specialized function and outputs standardized signals that can be consumed by agents or other protocols.
