@@ -1,4 +1,4 @@
-# Developer Resources  - Creating Custom Agents
+# Developer Resources - Creating Custom Agents
 
 ## Creating Custom Agents
 
@@ -7,7 +7,17 @@
 Custom INTUE agents extend the base Agent interface, providing specialized market analysis capabilities while maintaining compatibility with the broader INTUE ecosystem.
 
 ```javascript
-javascript// Base Agent interfaceinterface Agent {  // Core methods  initialize(config: AgentConfig): Promise<void>;  process(data: MarketData): Promise<SignalOutput>;  getMetadata(): AgentMetadata;    // Optional trading functionality  initializeTrading?(options: TradingOptions): void;  executeTrades?(options: TradeExecutionOptions): Promise<TradeResult[]>;}
+// Base Agent interface
+interface Agent {
+  // Core methods
+  initialize(config: AgentConfig): Promise<void>;
+  process(data: MarketData): Promise<SignalOutput>;
+  getMetadata(): AgentMetadata;
+  
+  // Optional trading functionality
+  initializeTrading?(options: TradingOptions): void;
+  executeTrades?(options: TradeExecutionOptions): Promise<TradeResult[]>;
+}
 ```
 
 ### Getting Started
@@ -24,7 +34,84 @@ javascript// Base Agent interfaceinterface Agent {  // Core methods  initialize(
 Create a new agent by extending the BaseAgent class:
 
 ```javascript
-javascriptimport { BaseAgent, AgentConfig, MarketData, SignalOutput } from '@intue/core';export class CustomAgent extends BaseAgent {  private sensitivity: number;  private timeframes: string[];    constructor(config: AgentConfig) {    super(config);    this.sensitivity = config.sensitivity || 0.5;    this.timeframes = config.timeframes || ['1h', '4h', '1d'];  }    async initialize(config: AgentConfig): Promise<void> {    // Load historical data, initialize models, etc.    this.logger.info('Initializing custom agent');        // Load required MCPs    this.registerMCP('sentiment', new SentimentMCP(config.mcpOptions?.sentiment));    this.registerMCP('volume', new VolumeMCP(config.mcpOptions?.volume));        // Initialize internal state    this.state = {      lastUpdate: Date.now(),      signalCache: new Map(),      modelState: {}    };        this.logger.info('Custom agent initialized successfully');  }    async process(data: MarketData): Promise<SignalOutput> {    this.logger.debug('Processing market data', { timeframe: data.timeframe });        // Process market data using registered MCPs    const sentimentSignals = await this.mcps.sentiment.process(data);    const volumeSignals = await this.mcps.volume.process(data);        // Combine signals based on agent logic    const combinedSignals = this.combineSignals(sentimentSignals, volumeSignals);        // Apply sensitivity filter    const filteredSignals = this.filterByConfidence(combinedSignals, this.sensitivity);        // Return processed signals    return {      timestamp: Date.now(),      signals: filteredSignals,      metadata: {        processingTime: Date.now() - data.timestamp,        signalCount: filteredSignals.length      }    };  }    private combineSignals(sentimentSignals, volumeSignals) {    // Custom signal combination logic    // ...    return combinedSignals;  }    private filterByConfidence(signals, threshold) {    return signals.filter(signal => signal.confidence >= threshold);  }    getMetadata(): AgentMetadata {    return {      name: 'Custom Agent',      version: '1.0.0',      capabilities: ['sentiment-analysis', 'volume-tracking'],      author: 'Your Name',      description: 'Custom agent for specialized market analysis',      configuration: {        sensitivity: this.sensitivity,        timeframes: this.timeframes      }    };  }}
+import { BaseAgent, AgentConfig, MarketData, SignalOutput } from '@intue/core';
+
+export class CustomAgent extends BaseAgent {
+  private sensitivity: number;
+  private timeframes: string[];
+  
+  constructor(config: AgentConfig) {
+    super(config);
+    this.sensitivity = config.sensitivity || 0.5;
+    this.timeframes = config.timeframes || ['1h', '4h', '1d'];
+  }
+  
+  async initialize(config: AgentConfig): Promise<void> {
+    // Load historical data, initialize models, etc.
+    this.logger.info('Initializing custom agent');
+    
+    // Load required MCPs
+    this.registerMCP('sentiment', new SentimentMCP(config.mcpOptions?.sentiment));
+    this.registerMCP('volume', new VolumeMCP(config.mcpOptions?.volume));
+    
+    // Initialize internal state
+    this.state = {
+      lastUpdate: Date.now(),
+      signalCache: new Map(),
+      modelState: {}
+    };
+    
+    this.logger.info('Custom agent initialized successfully');
+  }
+  
+  async process(data: MarketData): Promise<SignalOutput> {
+    this.logger.debug('Processing market data', { timeframe: data.timeframe });
+    
+    // Process market data using registered MCPs
+    const sentimentSignals = await this.mcps.sentiment.process(data);
+    const volumeSignals = await this.mcps.volume.process(data);
+    
+    // Combine signals based on agent logic
+    const combinedSignals = this.combineSignals(sentimentSignals, volumeSignals);
+    
+    // Apply sensitivity filter
+    const filteredSignals = this.filterByConfidence(combinedSignals, this.sensitivity);
+    
+    // Return processed signals
+    return {
+      timestamp: Date.now(),
+      signals: filteredSignals,
+      metadata: {
+        processingTime: Date.now() - data.timestamp,
+        signalCount: filteredSignals.length
+      }
+    };
+  }
+  
+  private combineSignals(sentimentSignals, volumeSignals) {
+    // Custom signal combination logic
+    // ...
+    return combinedSignals;
+  }
+  
+  private filterByConfidence(signals, threshold) {
+    return signals.filter(signal => signal.confidence >= threshold);
+  }
+  
+  getMetadata(): AgentMetadata {
+    return {
+      name: 'Custom Agent',
+      version: '1.0.0',
+      capabilities: ['sentiment-analysis', 'volume-tracking'],
+      author: 'Your Name',
+      description: 'Custom agent for specialized market analysis',
+      configuration: {
+        sensitivity: this.sensitivity,
+        timeframes: this.timeframes
+      }
+    };
+  }
+}
 ```
 
 #### Adding Trading Functionality
@@ -32,7 +119,84 @@ javascriptimport { BaseAgent, AgentConfig, MarketData, SignalOutput } from '@int
 Implement trading capabilities by adding the required methods:
 
 ```javascript
-javascriptimport { BaseAgent, TradingOptions, TradeExecutionOptions, TradeResult } from '@intue/core';export class CustomTradingAgent extends BaseAgent {  private exchange: ExchangeAdapter;  private riskManagement: RiskManagementConfig;  private tradingEnabled: boolean = false;    // ... other agent methods ...    initializeTrading(options: TradingOptions): void {    if (!options.exchange) {      throw new Error('Exchange adapter is required for trading');    }        this.exchange = options.exchange;    this.riskManagement = options.riskManagement || {      maxRiskPerTrade: 0.02,      stopLossPercent: 0.05,      takeProfitPercent: 0.1    };        this.tradingEnabled = true;    this.logger.info('Trading functionality initialized');  }    async executeTrades(options: TradeExecutionOptions): Promise<TradeResult[]> {    if (!this.tradingEnabled) {      throw new Error('Trading not initialized. Call initializeTrading() first');    }        // Get signals from latest processing    const signals = await this.process(options.marketData);        // Filter signals by confidence threshold    const tradableSignals = signals.signals.filter(      signal => signal.confidence >= (options.confidenceThreshold || 0.7)    );        // Execute trades based on signals    const executedTrades = [];        for (const signal of tradableSignals) {      try {        // Calculate position size based on risk management        const positionSize = this._calculatePositionSize(signal);                // Execute the trade        const orderResult = await this.exchange.placeOrder({          symbol: signal.asset + options.quoteAsset,          side: signal.direction === 'up' ? 'BUY' : 'SELL',          type: 'MARKET',          quantity: positionSize        });                // Record the executed trade        executedTrades.push({          signal,          orderResult,          timestamp: Date.now()        });      } catch (error) {        this.logger.error(`Error executing trade for ${signal.asset}:`, error);      }    }        return executedTrades;  }    private _calculatePositionSize(signal) {    // Position sizing logic based on risk management parameters    // ...  }}
+import { BaseAgent, AgentConfig, MarketData, SignalOutput } from '@intue/core';
+
+export class CustomAgent extends BaseAgent {
+  private sensitivity: number;
+  private timeframes: string[];
+  
+  constructor(config: AgentConfig) {
+    super(config);
+    this.sensitivity = config.sensitivity || 0.5;
+    this.timeframes = config.timeframes || ['1h', '4h', '1d'];
+  }
+  
+  async initialize(config: AgentConfig): Promise<void> {
+    // Load historical data, initialize models, etc.
+    this.logger.info('Initializing custom agent');
+    
+    // Load required MCPs
+    this.registerMCP('sentiment', new SentimentMCP(config.mcpOptions?.sentiment));
+    this.registerMCP('volume', new VolumeMCP(config.mcpOptions?.volume));
+    
+    // Initialize internal state
+    this.state = {
+      lastUpdate: Date.now(),
+      signalCache: new Map(),
+      modelState: {}
+    };
+    
+    this.logger.info('Custom agent initialized successfully');
+  }
+  
+  async process(data: MarketData): Promise<SignalOutput> {
+    this.logger.debug('Processing market data', { timeframe: data.timeframe });
+    
+    // Process market data using registered MCPs
+    const sentimentSignals = await this.mcps.sentiment.process(data);
+    const volumeSignals = await this.mcps.volume.process(data);
+    
+    // Combine signals based on agent logic
+    const combinedSignals = this.combineSignals(sentimentSignals, volumeSignals);
+    
+    // Apply sensitivity filter
+    const filteredSignals = this.filterByConfidence(combinedSignals, this.sensitivity);
+    
+    // Return processed signals
+    return {
+      timestamp: Date.now(),
+      signals: filteredSignals,
+      metadata: {
+        processingTime: Date.now() - data.timestamp,
+        signalCount: filteredSignals.length
+      }
+    };
+  }
+  
+  private combineSignals(sentimentSignals, volumeSignals) {
+    // Custom signal combination logic
+    // ...
+    return combinedSignals;
+  }
+  
+  private filterByConfidence(signals, threshold) {
+    return signals.filter(signal => signal.confidence >= threshold);
+  }
+  
+  getMetadata(): AgentMetadata {
+    return {
+      name: 'Custom Agent',
+      version: '1.0.0',
+      capabilities: ['sentiment-analysis', 'volume-tracking'],
+      author: 'Your Name',
+      description: 'Custom agent for specialized market analysis',
+      configuration: {
+        sensitivity: this.sensitivity,
+        timeframes: this.timeframes
+      }
+    };
+  }
+}
 ```
 
 ### Testing and Validation
@@ -42,7 +206,49 @@ javascriptimport { BaseAgent, TradingOptions, TradeExecutionOptions, TradeResult
 Create comprehensive unit tests for your agent:
 
 ```javascript
-javascriptimport { CustomAgent } from './custom-agent';import { MockMCP } from '@intue/testing';describe('CustomAgent', () => {  let agent;  let mockSentimentMCP;  let mockVolumeMCP;    beforeEach(() => {    mockSentimentMCP = new MockMCP('sentiment');    mockVolumeMCP = new MockMCP('volume');        agent = new CustomAgent({      sensitivity: 0.7,      timeframes: ['1h', '4h']    });        // Mock the MCPs    agent.registerMCP('sentiment', mockSentimentMCP);    agent.registerMCP('volume', mockVolumeMCP);  });    test('initializes successfully', async () => {    await agent.initialize({});    expect(agent.getState().lastUpdate).toBeDefined();  });    test('processes market data correctly', async () => {    // Set up mock MCP responses    mockSentimentMCP.setResponse([{ asset: 'BTC', score: 0.8 }]);    mockVolumeMCP.setResponse([{ asset: 'BTC', volumeIncrease: 0.5 }]);        const result = await agent.process({      timestamp: Date.now(),      timeframe: '1h',      data: { /* ... */ }    });        expect(result.signals).toHaveLength(1);    expect(result.signals[0].asset).toBe('BTC');    expect(result.signals[0].confidence).toBeGreaterThan(0.7);  });});
+import { CustomAgent } from './custom-agent';
+import { MockMCP } from '@intue/testing';
+
+describe('CustomAgent', () => {
+  let agent;
+  let mockSentimentMCP;
+  let mockVolumeMCP;
+  
+  beforeEach(() => {
+    mockSentimentMCP = new MockMCP('sentiment');
+    mockVolumeMCP = new MockMCP('volume');
+    
+    agent = new CustomAgent({
+      sensitivity: 0.7,
+      timeframes: ['1h', '4h']
+    });
+    
+    // Mock the MCPs
+    agent.registerMCP('sentiment', mockSentimentMCP);
+    agent.registerMCP('volume', mockVolumeMCP);
+  });
+  
+  test('initializes successfully', async () => {
+    await agent.initialize({});
+    expect(agent.getState().lastUpdate).toBeDefined();
+  });
+  
+  test('processes market data correctly', async () => {
+    // Set up mock MCP responses
+    mockSentimentMCP.setResponse([{ asset: 'BTC', score: 0.8 }]);
+    mockVolumeMCP.setResponse([{ asset: 'BTC', volumeIncrease: 0.5 }]);
+    
+    const result = await agent.process({
+      timestamp: Date.now(),
+      timeframe: '1h',
+      data: { /* ... */ }
+    });
+    
+    expect(result.signals).toHaveLength(1);
+    expect(result.signals[0].asset).toBe('BTC');
+    expect(result.signals[0].confidence).toBeGreaterThan(0.7);
+  });
+});
 ```
 
 #### Backtesting
@@ -50,7 +256,26 @@ javascriptimport { CustomAgent } from './custom-agent';import { MockMCP } from '
 Validate your agent on historical data:
 
 ```javascript
-javascriptimport { backtestStrategy } from '@intue/backtest';import { CustomAgent } from './custom-agent';async function runBacktest() {  const results = await backtestStrategy({    agent: new CustomAgent({      sensitivity: 0.7,      timeframes: ['1h', '4h', '1d']    }),    assets: ['BTC', 'ETH', 'SOL'],    initialCapital: 10000,    startDate: '2023-01-01',    endDate: '2023-06-01',    riskPerTrade: 0.02  });    console.log('Backtest results:', results);}runBacktest();
+import { backtestStrategy } from '@intue/backtest';
+import { CustomAgent } from './custom-agent';
+
+async function runBacktest() {
+  const results = await backtestStrategy({
+    agent: new CustomAgent({
+      sensitivity: 0.7,
+      timeframes: ['1h', '4h', '1d']
+    }),
+    assets: ['BTC', 'ETH', 'SOL'],
+    initialCapital: 10000,
+    startDate: '2023-01-01',
+    endDate: '2023-06-01',
+    riskPerTrade: 0.02
+  });
+  
+  console.log('Backtest results:', results);
+}
+
+runBacktest();
 ```
 
 ### Deployment
@@ -62,19 +287,63 @@ To make your agent available on the INTUE platform:
 1. Package your agent code according to platform standards:
 
 ```javascript
-javascript// package.json{  "name": "@yourname/custom-agent",  "version": "1.0.0",  "main": "dist/index.js",  "types": "dist/index.d.ts",  "files": ["dist", "README.md", "LICENSE"],  "dependencies": {    "@intue/core": "^1.0.0"  },  "peerDependencies": {    "@intue/exchange-adapters": "^1.0.0"  }}
+// package.json
+{
+  "name": "@yourname/custom-agent",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "README.md", "LICENSE"],
+  "dependencies": {
+    "@intue/core": "^1.0.0"
+  },
+  "peerDependencies": {
+    "@intue/exchange-adapters": "^1.0.0"
+  }
+}
 ```
 
 2. Create a manifest file describing your agent:
 
 ```json
-json{  "name": "Custom Market Agent",  "id": "custom-market-agent",  "version": "1.0.0",  "author": {    "name": "Your Name",    "email": "your.email@example.com",    "url": "https://your-website.com"  },  "description": "A custom agent for specialized market analysis",  "capabilities": ["sentiment-analysis", "volume-tracking"],  "tradingCapable": true,  "supportedExchanges": ["binance", "hyperliquid"],  "parameters": [    {      "name": "sensitivity",      "type": "float",      "default": 0.7,      "min": 0.1,      "max": 1.0,      "description": "Signal sensitivity threshold"    }  ]}
+{
+  "name": "Custom Market Agent",
+  "id": "custom-market-agent",
+  "version": "1.0.0",
+  "author": {
+    "name": "Your Name",
+    "email": "your.email@example.com",
+    "url": "https://your-website.com"
+  },
+  "description": "A custom agent for specialized market analysis",
+  "capabilities": ["sentiment-analysis", "volume-tracking"],
+  "tradingCapable": true,
+  "supportedExchanges": ["binance", "hyperliquid"],
+  "parameters": [
+    {
+      "name": "sensitivity",
+      "type": "float",
+      "default": 0.7,
+      "min": 0.1,
+      "max": 1.0,
+      "description
 ```
 
 3. Submit for review through the INTUE Marketplace SDK:
 
 ```javascript
-javascriptimport { MarketplaceSDK } from '@intue/marketplace';const marketplace = new MarketplaceSDK({  apiKey: 'YOUR_API_KEY'});await marketplace.submitAgent({  manifestPath: './agent-manifest.json',  packagePath: './dist',  documentation: './docs',  samples: './examples'});
+import { MarketplaceSDK } from '@intue/marketplace';
+
+const marketplace = new MarketplaceSDK({
+  apiKey: 'YOUR_API_KEY'
+});
+
+await marketplace.submitAgent({
+  manifestPath: './agent-manifest.json',
+  packagePath: './dist',
+  documentation: './docs',
+  samples: './examples'
+});
 ```
 
 #### Self-Hosting
@@ -82,7 +351,47 @@ javascriptimport { MarketplaceSDK } from '@intue/marketplace';const marketplace 
 For self-hosted deployments:
 
 ```javascript
-javascriptimport { AgentRuntime } from '@intue/runtime';import { CustomAgent } from './custom-agent';import { BinanceAdapter } from '@intue/exchange-adapters';// Initialize exchange adapterconst binance = new BinanceAdapter({  apiKey: process.env.BINANCE_API_KEY,  secretKey: process.env.BINANCE_SECRET_KEY});// Initialize agentconst agent = new CustomAgent({  sensitivity: 0.8,  timeframes: ['1h', '4h', '1d']});// Initialize agent runtimeconst runtime = new AgentRuntime({  agent,  dataProviders: {    market: new MarketDataProvider(),    sentiment: new SentimentDataProvider()  }});// Initialize trading if neededagent.initializeTrading({  exchange: binance,  riskManagement: {    maxRiskPerTrade: 0.02,    stopLossPercent: 0.05,    takeProfitPercent: 0.1  }});// Start the agent runtimeruntime.start({  mode: 'continuous',  interval: 60 * 60 * 1000,  // 1 hour  execution: agent.tradingEnabled ? 'live' : 'simulation'});
+import { AgentRuntime } from '@intue/runtime';
+import { CustomAgent } from './custom-agent';
+import { BinanceAdapter } from '@intue/exchange-adapters';
+
+// Initialize exchange adapter
+const binance = new BinanceAdapter({
+  apiKey: process.env.BINANCE_API_KEY,
+  secretKey: process.env.BINANCE_SECRET_KEY
+});
+
+// Initialize agent
+const agent = new CustomAgent({
+  sensitivity: 0.8,
+  timeframes: ['1h', '4h', '1d']
+});
+
+// Initialize agent runtime
+const runtime = new AgentRuntime({
+  agent,
+  dataProviders: {
+    market: new MarketDataProvider(),
+    sentiment: new SentimentDataProvider()
+  }
+});
+
+// Initialize trading if needed
+agent.initializeTrading({
+  exchange: binance,
+  riskManagement: {
+    maxRiskPerTrade: 0.02,
+    stopLossPercent: 0.05,
+    takeProfitPercent: 0.1
+  }
+});
+
+// Start the agent runtime
+runtime.start({
+  mode: 'continuous',
+  interval: 60 * 60 * 1000,  // 1 hour
+  execution: agent.tradingEnabled ? 'live' : 'simulation'
+});
 ```
 
 ### Best Practices
