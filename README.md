@@ -1,30 +1,55 @@
 
 ![Screenshot 2025-05-14 at 5 43 58 PM](https://github.com/user-attachments/assets/9d780993-83c5-4735-9e4a-1af007a8bc0a)
 
-# INTUE Core
+# Core Concepts
 
-Core utilities and shared components for the INTUE ecosystem - the intelligence layer for AI agents.
+## Agent Architecture
 
-## Overview
+INTUE agents are autonomous, specialized intelligence modules designed to perform specific market analysis functions. Each agent implements a modular architecture consisting of:
 
-INTUE is the intelligence layer for autonomous trading agents, a comprehensive framework designed for quantitative analysis of cryptocurrency markets using advanced AI protocols and agent-based architecture.
-Our platform enables sophisticated signal detection, cross-ecosystem correlation analysis, and autonomous trade execution with unprecedented precision. By leveraging specialized Model Context Protocols (MCPs), INTUE bridges the gap between raw market data and actionable trading intelligence.
+- **Signal Generators**: Specialized algorithms for pattern detection across market data
+- **Decision Engine**: Processing pipeline for signal evaluation and action determination
+- **Execution Framework**: Interface layer for trade execution and position management
+- **Performance Analytics**: Self-evaluation and optimization mechanisms
 
-## Installation
+Agents communicate via standardized protocols, enabling composition of complex strategies from simpler building blocks. This modular design allows for continuous improvement and customization without disrupting the overall system.
 
-Getting Started
-System Requirements
-Node.js: v14.0.0 or higher
+## Model Context Protocols (MCPs)
 
-NPM: v7.0.0 or higher
+MCPs form the foundation of INTUE's intelligence capabilities. These specialized processing modules transform raw market data into contextually relevant signals through:
 
-TypeScript: Recommended for full type support
+- **Category Classification**: Ecosystem and token categorization with specialized metrics
+- **Metric Processing**: Standardized calculation of key performance indicators
+- **Correlation Detection**: Identification of relationships between disparate data points
+- **Advanced Analysis**: Statistical processing using sophisticated mathematical models
 
-Installation
+MCPs are composable, allowing agents to leverage multiple protocols simultaneously for enhanced signal detection and pattern recognition.
+
+## Trading Execution Framework
+
+The execution layer provides standardized interfaces to multiple exchanges through adapter modules that handle:
+
+- **Order Management**: Precise execution with minimal slippage
+- **Position Tracking**: Real-time monitoring of active positions
+- **Risk Management**: Automated stop-loss, take-profit, and position sizing
+- **Exchange-Specific Optimizations**: Adapter-level specialization for each venue
+
+This framework ensures consistent behavior across different trading venues while optimizing for the unique characteristics of each exchange.
+
+# Getting Started
+
+## System Requirements
+
+- **Node.js**: v14.0.0 or higher
+- **NPM**: v7.0.0 or higher
+- **Storage**: Minimum 500GB SSD for historical data
+- **Memory**: 16GB RAM minimum, 32GB recommended
+- **CPU**: 8+ cores recommended for parallel processing
+- **Network**: Stable, low-latency internet connection
+
+##Installation
 INTUE can be installed directly via npm:
-
-Copy
-# Install the package
+bash# Install the package
 npm install @intue/core
 
 # Create project directory (optional)
@@ -32,11 +57,7 @@ mkdir my-intue-project
 cd my-intue-project
 Basic Usage
 Create a new file (e.g., index.ts or index.js):
- 
-typescript
-
-Copy
-import { Runtime, Agent } from '@intue/core';
+typescriptimport { Runtime, Agent } from '@intue/core';
 
 async function main() {
   // Initialize the runtime
@@ -71,8 +92,7 @@ async function main() {
 main().catch(console.error);
 Using Advanced Features
 Sentiment Analysis
-Copy
-import { SentimentAnalyzer, LunarCrushProvider } from '@intue/core';
+typescriptimport { SentimentAnalyzer, LunarCrushProvider } from '@intue/core';
 
 // Initialize the LunarCrush provider
 const provider = new LunarCrushProvider({
@@ -87,8 +107,7 @@ analyzer.addProvider(provider);
 const sentiment = await analyzer.analyzeSocialSentiment('BTC');
 console.log('BTC Sentiment:', sentiment);
 Ecosystem Correlation
-Copy
-import { EcosystemCorrelator } from '@intue/core';
+typescriptimport { EcosystemCorrelator } from '@intue/core';
 
 // Create an ecosystem correlator
 const correlator = new EcosystemCorrelator({
@@ -97,3 +116,5 @@ const correlator = new EcosystemCorrelator({
 });
 
 // Find correlations between assets
+const correlation = await correlator.analyzeCorrelation(['BTC', 'ETH', 'SOL']);
+console.log('Asset Correlations:', correlation);
