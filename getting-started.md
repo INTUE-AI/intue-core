@@ -1,4 +1,5 @@
 ---
+cover: .gitbook/assets/Screenshot 2025-05-14 at 5.43.58 PM.png
 coverY: 0
 ---
 
