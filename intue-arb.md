@@ -7,7 +7,12 @@
 The INTUE Arbitrage Agent identifies statistical edges and pricing inefficiencies across correlated assets and markets. Unlike simple cross-exchange arbitrage, this agent detects complex statistical relationships that present exploitable opportunities.
 
 ```javascript
-javascriptconst arbitrageAgent = new ArbitrageAgent({  edgeThreshold: 0.05,  // Minimum edge ratio to consider (5%)  executionSpeed: 'maximum',  correlationTypes: ['direct', 'inverse', 'lagging', 'cross-ecosystem'],  riskControl: 'adaptive'  // Adapts to market volatility});
+const arbitrageAgent = new ArbitrageAgent({
+  edgeThreshold: 0.05,  // Minimum edge ratio to consider (5%)
+  executionSpeed: 'maximum',
+  correlationTypes: ['direct', 'inverse', 'lagging', 'cross-ecosystem'],
+  riskControl: 'adaptive'  // Adapts to market volatility
+});
 ```
 
 ### Edge Detection Methodology
@@ -31,7 +36,12 @@ Each potential edge undergoes rigorous validation including:
 #### detectStatisticalEdges()
 
 ```javascript
-javascriptconst edges = await arbitrageAgent.detectStatisticalEdges({  correlationThreshold: 0.8,  lookbackPeriod: '30d',  minimumEdge: 0.03,  // 3% minimum exploitable edge  assets: ['ETH', 'BTC', 'SOL', 'AVAX']});
+const edges = await arbitrageAgent.detectStatisticalEdges({
+  correlationThreshold: 0.8,
+  lookbackPeriod: '30d',
+  minimumEdge: 0.03,  // 3% minimum exploitable edge
+  assets: ['ETH', 'BTC', 'SOL', 'AVAX']
+});
 ```
 
 Identifies statistical edges between highly correlated assets, returning detailed analysis of potential opportunities.
@@ -39,7 +49,12 @@ Identifies statistical edges between highly correlated assets, returning detaile
 #### analyzeSpreadDynamics()
 
 ```javascript
-javascriptconst spreadAnalysis = await arbitrageAgent.analyzeSpreadDynamics({  pair: ['ETH-USDT', 'ETH-USDC'],  venues: ['binance', 'coinbase', 'kraken'],  timeframe: '7d',  granularity: '1m'});
+const spreadAnalysis = await arbitrageAgent.analyzeSpreadDynamics({
+  pair: ['ETH-USDT', 'ETH-USDC'],
+  venues: ['binance', 'coinbase', 'kraken'],
+  timeframe: '7d',
+  granularity: '1m'
+});
 ```
 
 Provides in-depth analysis of spread behavior across different venues and stablecoin pairs, identifying patterns and anomalies.
@@ -54,7 +69,13 @@ The Arbitrage Agent implements sophisticated execution strategies to maximize ed
 * **Partial Fill Management**: Implements contingency strategies for incomplete executions
 
 ```javascript
-javascript// Execute on detected edgeconst execution = await arbitrageAgent.executeEdge({  edge: detectedEdge,  capitalAllocation: 0.05,  // 5% of available capital  executionStrategy: 'concurrent', // simultaneous execution  timeLimit: 2000  // milliseconds});
+// Execute on detected edge
+const execution = await arbitrageAgent.executeEdge({
+  edge: detectedEdge,
+  capitalAllocation: 0.05,  // 5% of available capital
+  executionStrategy: 'concurrent',  // simultaneous execution
+  timeLimit: 2000  // milliseconds
+});
 ```
 
 ### Performance Metrics
