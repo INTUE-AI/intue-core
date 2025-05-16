@@ -3,6 +3,8 @@
 
 # INTUE Documentation
 
+CA: HDsMB66dPUhYMs7uvJnMCfANN4CLAYourB2qtAcZpump
+
 ## Welcome to INTUE
 
 INTUE is the intelligence layer for autonomous trading agents, a comprehensive framework designed for quantitative analysis of cryptocurrency markets using advanced AI protocols and agent-based architecture.
